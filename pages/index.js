@@ -1,35 +1,40 @@
-import React, { useState, useEffect, useRef } from 'react';
-import * as tmImage from '@teachablemachine/image';
+import React, { useState, useEffect, useRef } from 'react'
+import * as tmImage from '@teachablemachine/image'
+import { useRouter } from 'next/router'
+import Filterpage from './pages/filterpage'
 
-const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
+//const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
+const URL = ' https://teachablemachine.withgoogle.com/models/MN0GjXZHG/';
 const modelURL = URL + "model.json";
 const metadataURL = URL + "metadata.json";
 
 const imageMarker = [
-    "Bigtv",
-    "TV",
-    "Sticker",
-    "Frank",
-    "Mummy",
-    "Vampire",
-    "Witch",
-    "Pumpkin",
-    "Boy",
-    "Girl",
-    "Cat",
+    "Dompet",
 ]
 
 function TeachableMachineTracking() {
 
+    const [isLoading, setIsLoading] = useState(true)
+
     const videoRef = useRef()
-    let model;
+    let model, code;
+
+    //get params from URL
+
+    const router = useRouter();
 
     useEffect(() => {
-        _init()
-    }, [])
+        if (router.isReady) {
+            console.log('ready')
+            code = router.query.code
+            _init()
+        }
+    }, [router.isReady])
 
     const _init = async () => {
 
+        localStorage.setItem('filtercode', code)
+        
         model = await tmImage.load(modelURL, metadataURL);
         let webcamStream = await navigator.mediaDevices.getUserMedia({
             video: {
@@ -71,22 +76,15 @@ function TeachableMachineTracking() {
         if (videoRef.current.srcObject !== null) {
             const prediction = await model.predict(videoRef.current);
             let probabilities = {
-                Bigtv: 0.95,
-                TV: 0.95,
-                Sticker: 0.95,
-                Frank: 0.9,
-                Mummy: 1,
-                Vampire: 0.9,
-                Witch: 0.9,
-                Pumpkin: 0.9,
-                Boy: 0.9,
-                Girl: 0.99,
-                Cat: 0.9,
+                Dompet: 0.95,
             };
+
+            console.log(prediction)
+
             prediction.forEach((val) => {
                 if (imageMarker.includes(val.className) && val.probability >= probabilities[val.className]) {
-                    //_stop()
-                    _triggerToFilterPage(val.className)
+                    _stop()
+                    _triggerToFilterPage()
                 }
             })
             window.requestAnimationFrame(_loop);
@@ -108,10 +106,11 @@ function TeachableMachineTracking() {
         videoRef.current.srcObject = null;
     }
 
-    const _triggerToFilterPage = (markerName) => {
-
-      // Trigger Here. pass marker props on deepAr page, to trigger the filter
-
+    const _triggerToFilterPage = () => {
+        console.log(`Filter Code ${code}`)
+        // Trigger Here. pass marker props on deepAr page, to trigger the filter
+        window.location = `http://localhost:3000/pages/filterpage/?filtercode=${code}`
+       
     }
 
     const styles = {

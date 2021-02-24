@@ -1,6 +1,24 @@
 var canvasHeight = window.innerHeight;
 var canvasWidth = window.innerWidth;
 
+// var filterIndex = document.getElementById('helper').getAttribute('data-name')
+var filterIndex =localStorage.getItem('filtercode')
+
+console.log(filterIndex)
+
+var effects = [
+    '/ass/lib/effects/background_segmentation',
+    '/ass/lib/effects/aviators',
+    '/ass/lib/effects/beard',
+    '/ass/lib/effects/dalmatian',
+    '/ass/lib/effects/flowers',
+    '/ass/lib/effects/koala',
+    '/ass/lib/effects/lion',
+    '/ass/lib/effects/teddycigar'
+];
+
+console.log(effects[1])
+
 // desktop, the width of the canvas is 0.66 * window height and on mobile it's fullscreen
 if (window.innerWidth > window.innerHeight) {
     canvasWidth = Math.floor(window.innerHeight * 0.66);
@@ -15,16 +33,9 @@ var deepAR = DeepAR({
     libPath: '/ass/lib',
     segmentationInfoZip: 'segmentation.zip',
     onInitialize: function () {
-
-        console.log("HELLO")
-        // start video immediately after the initalization, mirror = true
+        
         deepAR.startVideo(true);
-
-        // or we can setup the video element externally and call deepAR.setVideoElement (see startExternalVideo function below)
-
-        deepAR.switchEffect(0, 'slot', '/ass/lib/effects/beard', function () {
-            // effect loaded
-            console.log("HELLO")
+        deepAR.switchEffect(0, 'slot', effects[filterIndex], function () {
         });
     }
 });
@@ -61,82 +72,4 @@ deepAR.onFaceVisibilityChanged = function (visible) {
 deepAR.downloadFaceTrackingModel('/ass/lib/models-68-extreme.bin');
 
 
-function startExternalVideo() {
 
-    // create video element
-    var video = document.createElement('video');
-    video.muted = true;
-    video.loop = true;
-    video.controls = true;
-    video.setAttribute('playsinline', 'playsinline');
-    video.style.width = '100%';
-    video.style.height = '100%';
-
-    // put it somewhere in the DOM
-    var videoContainer = document.createElement('div');
-    videoContainer.appendChild(video);
-    videoContainer.style.width = '1px';
-    videoContainer.style.height = '1px';
-    videoContainer.style.position = 'absolute';
-    videoContainer.style.top = '0px';
-    videoContainer.style.left = '0px';
-    videoContainer.style['z-index'] = '-1';
-    document.body.appendChild(videoContainer);
-
-    navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-        try {
-            video.srcObject = stream;
-        } catch (error) {
-            video.src = URL.createObjectURL(stream);
-        }
-
-        setTimeout(function () {
-            video.play();
-        }, 50);
-    }).catch(function (error) {
-
-    });
-
-    // tell the DeepAR SDK about our new video element
-    deepAR.setVideoElement(video, true);
-}
-
-
-// Position the carousel to cover the canvas
-if (window.innerWidth > window.innerHeight) {
-    var width = Math.floor(window.innerHeight * 0.66);
-    var carousel = document.getElementsByClassName('effect-carousel')[0];
-    carousel.style.width = width + 'px';
-    carousel.style.marginLeft = (window.innerWidth - width) / 2 + "px";
-}
-
-
-$(document).ready(function () {
-    $('.effect-carousel').slick({
-        slidesToShow: 1,
-        centerMode: true,
-        focusOnSelect: true,
-        arrows: false,
-        accessibility: false,
-        variableWidth: true
-    });
-
-    var effects = [
-        './effects/background_segmentation',
-        './effects/aviators',
-        './effects/beard',
-        './effects/dalmatian',
-        './effects/flowers',
-        './effects/koala',
-        './effects/lion',
-        './effects/teddycigar'
-    ];
-
-    $('.effect-carousel').on('afterChange', function (event, slick, currentSlide) {
-        console.log('change')
-        deepAR.switchEffect(0, 'slot', effects[currentSlide]);
-    });
-
-    console.log("Hello World")
-
-});      
