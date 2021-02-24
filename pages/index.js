@@ -1,65 +1,137 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React, { useState, useEffect, useRef } from 'react';
+import * as tmImage from '@teachablemachine/image';
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
+const modelURL = URL + "model.json";
+const metadataURL = URL + "metadata.json";
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+const imageMarker = [
+    "Bigtv",
+    "TV",
+    "Sticker",
+    "Frank",
+    "Mummy",
+    "Vampire",
+    "Witch",
+    "Pumpkin",
+    "Boy",
+    "Girl",
+    "Cat",
+]
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+function TeachableMachineTracking() {
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+    const videoRef = useRef()
+    let model;
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+    useEffect(() => {
+        _init()
+    }, [])
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+    const _init = async () => {
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        model = await tmImage.load(modelURL, metadataURL);
+        let webcamStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                advanced: [
+                    {
+                        facingMode: "environment",
+                    },
+                ],
+            },
+            audio: false,
+        });
+
+        videoRef.current.srcObject = webcamStream;
+        window.stream = webcamStream;
+
+        const delay = (s) => {
+            return new Promise((resolve) => {
+                setTimeout(resolve, s);
+            });
+        };
+
+        await delay(2500)
+        window.requestId = window.requestAnimationFrame(_loop);
+
+    }
+
+    const _loop = async () => {
+
+        try {
+            await _predict();
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
+
+    const _predict = async () => {
+
+        if (videoRef.current.srcObject !== null) {
+            const prediction = await model.predict(videoRef.current);
+            let probabilities = {
+                Bigtv: 0.95,
+                TV: 0.95,
+                Sticker: 0.95,
+                Frank: 0.9,
+                Mummy: 1,
+                Vampire: 0.9,
+                Witch: 0.9,
+                Pumpkin: 0.9,
+                Boy: 0.9,
+                Girl: 0.99,
+                Cat: 0.9,
+            };
+            prediction.forEach((val) => {
+                if (imageMarker.includes(val.className) && val.probability >= probabilities[val.className]) {
+                    //_stop()
+                    _triggerToFilterPage(val.className)
+                }
+            })
+            window.requestAnimationFrame(_loop);
+        }
+
+    }
+
+    const _stop = () => {
+
+        window.cancelAnimationFrame(_loop);
+        var stream = videoRef.current.srcObject;
+        var tracks = stream.getTracks();
+
+        for (var i = 0; i < tracks.length; i++) {
+            var track = tracks[i];
+            track.stop();
+        }
+
+        videoRef.current.srcObject = null;
+    }
+
+    const _triggerToFilterPage = (markerName) => {
+
+      // Trigger Here. pass marker props on deepAr page, to trigger the filter
+
+    }
+
+    const styles = {
+        height: "100vh",
+    };
+
+    return (
+        <div>
+            <video
+                muted
+                ref={videoRef}
+                autoPlay
+                playsInline
+                style={styles}
+                controls={false}
+            />
         </div>
-      </main>
+    )
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
 }
+
+
+export default TeachableMachineTracking;
