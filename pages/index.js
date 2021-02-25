@@ -17,7 +17,7 @@ function TeachableMachineTracking() {
     const [isLoading, setIsLoading] = useState(true)
 
     const videoRef = useRef()
-    const hostName = window.location.hostname;
+   
     let model, code;
 
     //get params from URL
@@ -111,7 +111,7 @@ function TeachableMachineTracking() {
         console.log(`Filter Code ${code}`)
 
         // Trigger Here. pass marker props on deepAr page, to trigger the filter
-        window.location = `${hostName}/pages/filterpage/?filtercode=${code}`
+        window.location = `/pages/filterpage/?filtercode=${code}`
     }
 
     const styles = {
