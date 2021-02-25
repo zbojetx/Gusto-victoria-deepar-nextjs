@@ -7,7 +7,6 @@ import Filterpage from './pages/filterpage'
 const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
 const modelURL = URL + "model.json";
 const metadataURL = URL + "metadata.json";
-const hostName = window.location.hostname;
 
 const imageMarker = [
     "TV",
@@ -18,6 +17,7 @@ function TeachableMachineTracking() {
     const [isLoading, setIsLoading] = useState(true)
 
     const videoRef = useRef()
+    const hostName = window.location.hostname;
     let model, code;
 
     //get params from URL
