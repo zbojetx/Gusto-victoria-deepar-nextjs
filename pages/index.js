@@ -17,7 +17,6 @@ function TeachableMachineTracking() {
     const [isLoading, setIsLoading] = useState(true)
 
     const videoRef = useRef()
-   
     let model, code;
 
     //get params from URL
