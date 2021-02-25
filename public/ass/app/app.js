@@ -35,8 +35,7 @@ var deepAR = DeepAR({
     onInitialize: function () {
         
         deepAR.startVideo(true);
-        deepAR.switchEffect(0, 'slot', effects[filterIndex], function () {
-        });
+        deepAR.switchEffect(0, 'slot', effects[filterIndex]);
     }
 });
 

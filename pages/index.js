@@ -7,6 +7,7 @@ import Filterpage from './pages/filterpage'
 const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
 const modelURL = URL + "model.json";
 const metadataURL = URL + "metadata.json";
+const hostName = window.location.hostname;
 
 const imageMarker = [
     "TV",
@@ -108,9 +109,9 @@ function TeachableMachineTracking() {
 
     const _triggerToFilterPage = () => {
         console.log(`Filter Code ${code}`)
+
         // Trigger Here. pass marker props on deepAr page, to trigger the filter
-        window.location = `http://localhost:3000/pages/filterpage/?filtercode=${code}`
-       
+        window.location = `${hostName}/pages/filterpage/?filtercode=${code}`
     }
 
     const styles = {
