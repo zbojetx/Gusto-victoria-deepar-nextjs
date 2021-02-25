@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 import Filterpage from './pages/filterpage'
 
 //const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
-const URL = ' https://teachablemachine.withgoogle.com/models/MN0GjXZHG/';
+const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
 const modelURL = URL + "model.json";
 const metadataURL = URL + "metadata.json";
 
 const imageMarker = [
-    "Dompet",
+    "TV",
 ]
 
 function TeachableMachineTracking() {
@@ -76,7 +76,7 @@ function TeachableMachineTracking() {
         if (videoRef.current.srcObject !== null) {
             const prediction = await model.predict(videoRef.current);
             let probabilities = {
-                Dompet: 0.95,
+                TV: 0.95,
             };
 
             console.log(prediction)
