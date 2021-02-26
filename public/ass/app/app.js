@@ -6,10 +6,10 @@ var filterIndex = localStorage.getItem('filtercode')
 console.log(filterIndex)
 
 var effects = [
-    '/ass/effects/captain_hat',
-    '/ass/effects/chef_hat',
-    '/ass/effects/glasses',
-    '/ass/effects/heart_glasses',
+    '/ass/lib/effects/aviators',
+    '/ass/lib/effects/beard',
+    '/ass/lib/effects/flowers',
+    '/ass/lib/effects/lion',
 ];
 
 // desktop, the width of the canvas is 0.66 * window height and on mobile it's fullscreen
