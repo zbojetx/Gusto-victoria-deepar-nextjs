@@ -38,7 +38,7 @@ export default function Home() {
         });
 
         setIsPreview(true)
-        setImageLink(uploadResult.url)
+        setImageLink(`https://devb-upload.s3.ap-east-1.amazonaws.com/${s3URL.filename}`)
     }
 
 
@@ -51,7 +51,8 @@ export default function Home() {
 
                 {!isPreview ? (
                     <div>
-                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh' }} ></canvas>
+                        {/* <img src="/assets/image/TV.png"  style={{ position:'absolute',  transform: `rotate(90deg)`, bottom: 0, top: 0 }} /> */}
+                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} ></canvas>
                         <button onClick={_takeSceenShoot} id='take-screenshoot' >  Screenshoot</button>
                     </div>
                 ) : (
