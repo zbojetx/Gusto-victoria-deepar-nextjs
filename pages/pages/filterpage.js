@@ -10,6 +10,17 @@ export default function Home() {
     const [isPreview, setIsPreview] = useState(false)
     const [imageLink, setImageLink] = useState('')
 
+
+    useEffect(() => {
+        _isStarting()
+    })
+
+    const _isStarting = () => {
+        window.deepAR.onVideoStarted = function () {
+            console.log("VIDEO")
+        };
+    }
+
     const _takeSceenShoot = async () => {
         window.deepAR.takeScreenshot()
         window.deepAR.onScreenshotTaken = async function (photo) {
@@ -53,23 +64,21 @@ export default function Home() {
             <Head>
                 <title>Filter Page</title>
             </Head>
-            <main>
+            <main style={{ height: '100vh' }}>
                 {!isPreview ? (
                     <div>
-                        {/* <img src="/assets/image/TV.png"  style={{ position:'absolute',  transform: `rotate(90deg)`, bottom: 0, top: 0 }} /> */}
-                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} ></canvas>
-                        <button onClick={_takeSceenShoot} id='take-screenshoot' >  Screenshoot</button>
+                        {/* <img src="/assets/image/TV.png"  style={{ position:'absolute',  transform: `rotate(90deg)`, height: '100vh' }} /> */}
+                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} onClick={_takeSceenShoot}></canvas>
                     </div>
                 ) : (
                         <div>
                             <div className='img-prev' className="deepar" id="deepar-canvas" style={{ height: '100vh' }}>
-                                <p onClick={_closePreview}>x</p>
+                                <p style={{ position: 'absolute', left: 20, fontSize: 25, fontWeight: 'bold', color: 'white' }} onClick={_closePreview}>X</p>
                                 <img src={imageLink} />
                             </div>
                         </div>
                     )
                 }
-
                 <script type="text/javascript" src="/ass/lib/deepar.js"></script>
                 <script type="text/javascript" src="/ass/app/app.js"></script>
             </main>

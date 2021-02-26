@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
-import * as tmImage from '@teachablemachine/image'
-import { useRouter } from 'next/router'
-import Filterpage from './pages/filterpage'
+import React, { useState, useEffect, useRef } from 'react';
+import * as tmImage from '@teachablemachine/image';
+import { useRouter } from 'next/router';
 
 //const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
 const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
@@ -34,7 +33,7 @@ function TeachableMachineTracking() {
     const _init = async () => {
 
         localStorage.setItem('filtercode', code)
-        
+
         model = await tmImage.load(modelURL, metadataURL);
         let webcamStream = await navigator.mediaDevices.getUserMedia({
             video: {
@@ -79,8 +78,6 @@ function TeachableMachineTracking() {
                 TV: 0.95,
             };
 
-            console.log(prediction)
-
             prediction.forEach((val) => {
                 if (imageMarker.includes(val.className) && val.probability >= probabilities[val.className]) {
                     _stop()
@@ -114,7 +111,7 @@ function TeachableMachineTracking() {
     }
 
     const styles = {
-        height: "100vh",
+        height: '100vh',
     };
 
     return (
