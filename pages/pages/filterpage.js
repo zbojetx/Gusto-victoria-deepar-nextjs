@@ -39,6 +39,12 @@ export default function Home() {
 
         setIsPreview(true)
         setImageLink(`https://devb-upload.s3.ap-east-1.amazonaws.com/${s3URL.filename}`)
+        console.log(`https://devb-upload.s3.ap-east-1.amazonaws.com/${s3URL.filename}`)
+    }
+
+    const _closePreview = () => {
+        setIsPreview(false)
+        window.location.reload()
     }
 
 
@@ -48,7 +54,6 @@ export default function Home() {
                 <title>Filter Page</title>
             </Head>
             <main>
-
                 {!isPreview ? (
                     <div>
                         {/* <img src="/assets/image/TV.png"  style={{ position:'absolute',  transform: `rotate(90deg)`, bottom: 0, top: 0 }} /> */}
@@ -58,10 +63,12 @@ export default function Home() {
                 ) : (
                         <div>
                             <div className='img-prev' className="deepar" id="deepar-canvas" style={{ height: '100vh' }}>
+                                <p onClick={_closePreview}>x</p>
                                 <img src={imageLink} />
                             </div>
                         </div>
-                    )}
+                    )
+                }
 
                 <script type="text/javascript" src="/ass/lib/deepar.js"></script>
                 <script type="text/javascript" src="/ass/app/app.js"></script>
