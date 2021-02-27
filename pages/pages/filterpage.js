@@ -66,9 +66,9 @@ export default function Home() {
             </Head>
             <main style={{ height: '100vh' }}>
                 {!isPreview ? (
-                    <div>
-                        {/* <img src="/assets/image/TV.png"  style={{ position:'absolute',  transform: `rotate(90deg)`, height: '100vh' }} /> */}
-                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} onClick={_takeSceenShoot}></canvas>
+                    <div style={{ display: 'flex' }}>
+                        <img src="/assets/image/TV.png"  style={{ position:'absolute', width: '100%', alignSelf: 'center', justifyContent:'center'}} />
+                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} onClick={_takeSceenShoot}> </canvas>
                     </div>
                 ) : (
                         <div>
