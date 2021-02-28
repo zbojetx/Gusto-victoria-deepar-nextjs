@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Head from 'next/head';
 import * as tmImage from '@teachablemachine/image';
 import { useRouter } from 'next/router';
 
@@ -11,14 +12,13 @@ const imageMarker = [
     "TV",
 ]
 
+
+
 function TeachableMachineTracking() {
 
     const [isLoading, setIsLoading] = useState(true)
-
     const videoRef = useRef()
     let model, code;
-
-    //get params from URL
 
     const router = useRouter();
 
@@ -29,6 +29,7 @@ function TeachableMachineTracking() {
             _init()
         }
     }, [router.isReady])
+
 
     const _init = async () => {
 
@@ -61,7 +62,6 @@ function TeachableMachineTracking() {
     }
 
     const _loop = async () => {
-
         try {
             await _predict();
         } catch (err) {
@@ -110,21 +110,34 @@ function TeachableMachineTracking() {
         window.location = `/pages/filterpage/?filtercode=${code}`
     }
 
-    const styles = {
-        height: '100vh',
-    };
 
     return (
         <div>
-            <video
-                muted
-                ref={videoRef}
-                autoPlay
-                playsInline
-                style={styles}
-                controls={false}
-            />
+            <Head>
+                <title>Teachable Page</title>
+            </Head>
+            <main>
+                <div className="header">
+                <img src="/assets/image/top-banner.png" className="top-banner" />
+                </div>
+                <div className="video">
+                    <img src="/assets/image/camera-frame.png" className="camera-frame" />
+                    <video
+                        muted
+                        ref={videoRef}
+                        autoPlay
+                        playsInline={true}
+                        style={{ width:'100%'}}
+                        controls={false}
+                    />
+                </div>
+                <div className="footer">
+                    <p>將相機對準維多利亞港電視台</p>
+                    <p>Aim your camera at the Victoria Harbour TV</p>
+                </div>
+            </main>
         </div>
+
     )
 
 }

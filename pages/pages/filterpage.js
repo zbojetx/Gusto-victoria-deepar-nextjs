@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Head from 'next/head';
 import styles from '../../styles/Home.module.css';
-import { useRouter } from 'next/router';
-import html2canvas from 'html2canvas'
 
 export default function Home() {
 
@@ -39,7 +37,6 @@ export default function Home() {
         );
 
         s3URL = await s3URL.json();
-
         let uploadResult = await fetch(s3URL.url, {
             method: "PUT",
             headers: {
@@ -67,7 +64,7 @@ export default function Home() {
             <main style={{ height: '100vh' }}>
                 {!isPreview ? (
                     <div style={{ display: 'flex' }}>
-                        <img src="/assets/image/TV.png"  style={{ position:'absolute', width: '100%', alignSelf: 'center', justifyContent:'center'}} />
+                        <img src="/assets/image/TV.png" style={{ position:'absolute', width: '100%', alignSelf: 'center', justifyContent:'center'}} />
                         <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} onClick={_takeSceenShoot}> </canvas>
                     </div>
                 ) : (
