@@ -76,8 +76,8 @@ export default function Home() {
                         </div>
                     )
                 }
-                <script type="text/javascript" src="/ass/lib/deepar.js"></script>
-                <script type="text/javascript" src="/ass/app/app.js"></script>
+                <script type="text/javascript" src="/lib/deepar.js"></script>
+                <script type="text/javascript" src="/app/app.js"></script>
             </main>
         </div>
     )
