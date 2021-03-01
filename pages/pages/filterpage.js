@@ -61,10 +61,11 @@ export default function Home() {
             <Head>
                 <title>Filter Page</title>
             </Head>
-            <main style={{ height: '100vh' }}>
+            <main style={{ height: '100vh', width:'100%' }}>
                 {!isPreview ? (
                     <div style={{ display: 'flex' }}>
-                        <img src="/assets/image/TV.png" style={{ position:'absolute', width: '100%', alignSelf: 'center', justifyContent:'center'}} />
+                        <img id="frame-overlay" style={{ position:'absolute', width: '100%', alignSelf: 'center', justifyContent:'center'}} />
+                        {/* <img src="/assets/image/TV.png" style={{ position:'absolute', width: '100%', alignSelf: 'center', justifyContent:'center'}} /> */}
                         <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} onClick={_takeSceenShoot}> </canvas>
                     </div>
                 ) : (
