@@ -28,10 +28,10 @@ function TeachableMachineTracking() {
     useEffect(() => {
 
         if (isIOS && !isSafari) {
-            alert("COPY LINK BRO")
+            window.open('x-web-search://?ar', "_self");
+            window.location.href = window.location.href;
         } else if (isAndroid && !isChrome) {
-            alert("Copy Link Bellow")
-            //window.location.href = `googlechrome://navigate?url=${window.location.href}`;
+            window.location.href = `googlechrome://navigate?url=${window.location.href}`;
         } else {
             if (router.isReady) {
                 console.log('ready')
