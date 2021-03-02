@@ -1,9 +1,8 @@
 var canvasHeight = window.innerHeight;
 var canvasWidth = window.innerWidth;
 
-var filterIndex = localStorage.getItem('filtercode')
 
-console.log(filterIndex)
+var filterIndex = localStorage.getItem('filtercode')
 
 var effects = [
     '/effects/captain_hat',
@@ -53,46 +52,6 @@ deepAR.onImageVisibilityChanged = function (visible) {
 deepAR.onFaceVisibilityChanged = function (visible) {
     console.log('face visible', visible);
 };
-
-function startExternalVideo() {
-
-    // create video element
-    var video = document.createElement('video');
-    video.muted = true;
-    video.loop = true;
-    video.controls = true;
-    video.setAttribute('playsinline', 'playsinline');
-    video.style.width = '100%';
-    video.style.height = '100%';
-
-    // put it somewhere in the DOM
-    var videoContainer = document.createElement('div');
-    videoContainer.appendChild(video);
-    videoContainer.style.width = '1px';
-    videoContainer.style.height = '1px';
-    videoContainer.style.position = 'absolute';
-    videoContainer.style.top = '0px';
-    videoContainer.style.left = '0px';
-    videoContainer.style['z-index'] = '-1';
-    document.body.appendChild(videoContainer);
-
-    navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-        try {
-            video.srcObject = stream;
-        } catch (error) {
-            video.src = URL.createObjectURL(stream);
-        }
-
-        setTimeout(function () {
-            video.play();
-        }, 50);
-    }).catch(function (error) {
-
-    });
-
-    // tell the DeepAR SDK about our new video element
-    deepAR.setVideoElement(video, true);
-}
 
 deepAR.downloadFaceTrackingModel('/lib/models-68-extreme.bin');
 

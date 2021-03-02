@@ -25,7 +25,6 @@ export default function Home() {
         const filterIndex = localStorage.getItem('filtercode')
         setCode(filterIndex)
         window.deepAR.onVideoStarted = function () {
-
         };
     }
 
@@ -72,13 +71,10 @@ export default function Home() {
             </Head>
             <main style={{ height: '100vh', width: '100%' }}>
                 {!isPreview ? (
-                    <div style={{ display: 'flex' }}>   
-                         <img className="frame-overlay" src={overlayImage[code]} />
-                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} >
-                           
-                        </canvas>
+                    <div style={{ display: 'flex' }}>
+                        <img className="frame-overlay" id="frame-overlay" src={overlayImage[code]} />
+                        <canvas className="deepar" id="deepar-canvas" />
                         <div className="take-button" onClick={_takeSceenShoot}>
-
                         </div>
                     </div>
                 ) : (
@@ -86,6 +82,12 @@ export default function Home() {
                             <div className='img-prev' className="deepar" id="deepar-canvas">
                                 <p style={{ position: 'absolute', left: 20, fontSize: 25, fontWeight: 'bold', color: 'white' }} onClick={_closePreview}>X</p>
                                 <img src={imageLink} />
+                                <div style={{ bottom: 30, position: 'absolute',borderRadius: 5, alignItems:'center', width: '100%', padding: 7}}>
+                                    <div style={{ fontWeight: 'bold', color: 'white', textAlign: 'center' }}>
+                                        長按相片收藏並與家人朋友分享吧！<br />
+                                        Long press the photo to save and share with your family and friends!
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )
