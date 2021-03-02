@@ -154,7 +154,7 @@ function TeachableMachineTracking() {
                     </div>
                 </main>
                 :
-                <div className="redirection"  >
+                <div className="redirection" >
                     <img className="browser-logo" src={isIOS ? '/assets/image/safari.png' : '/assets/image/chrome.png'} />
                     <div>
                         <p className="my-3">
