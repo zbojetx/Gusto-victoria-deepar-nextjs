@@ -14,9 +14,6 @@ const imageMarker = [
     "TV",
 ]
 
-const safariLogo = '/assets/image/safari.png';
-const chromeLogo = '/assets/image/chrome.png';
-
 function TeachableMachineTracking() {
 
     const [isLoading, setIsLoading] = useState(true)
@@ -158,7 +155,7 @@ function TeachableMachineTracking() {
                 </main>
                 :
                 <div className="redirection"  >
-                    <img className="browser-logo" src={isIOS ? safariLogo : chromeLogo} />
+                    <img className="browser-logo" src={isIOS ? '/assets/image/safari.png' : '/assets/image/chrome.png'} />
                     <div>
                         <p className="my-3">
                             {isIOS ? "Open with Safari for iOS to access this content" : "Open with Chrome for Android to access this content"}
