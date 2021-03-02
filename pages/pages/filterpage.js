@@ -21,11 +21,11 @@ export default function Home() {
         _isStarting()
     })
 
-    const _isStarting = async() => {
+    const _isStarting = async () => {
         const filterIndex = localStorage.getItem('filtercode')
         setCode(filterIndex)
         window.deepAR.onVideoStarted = function () {
-            
+
         };
     }
 
@@ -70,15 +70,20 @@ export default function Home() {
             <Head>
                 <title>Filter Page</title>
             </Head>
-            <main style={{ height: '100vh', width:'100%' }}>
+            <main style={{ height: '100vh', width: '100%' }}>
                 {!isPreview ? (
-                    <div style={{ display: 'flex' }}>
-                        <img className="frame-overlay" src={overlayImage[code]}  />
-                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} onClick={_takeSceenShoot}> </canvas>
+                    <div style={{ display: 'flex' }}>   
+                         <img className="frame-overlay" src={overlayImage[code]} />
+                        <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} >
+                           
+                        </canvas>
+                        <div className="take-button" onClick={_takeSceenShoot}>
+
+                        </div>
                     </div>
                 ) : (
                         <div>
-                            <div className='img-prev' className="deepar" id="deepar-canvas" style={{ height: '100vh' }}>
+                            <div className='img-prev' className="deepar" id="deepar-canvas">
                                 <p style={{ position: 'absolute', left: 20, fontSize: 25, fontWeight: 'bold', color: 'white' }} onClick={_closePreview}>X</p>
                                 <img src={imageLink} />
                             </div>

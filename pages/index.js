@@ -4,6 +4,7 @@ import * as tmImage from '@teachablemachine/image';
 import { useRouter } from 'next/router';
 import { isChrome, isSafari, isAndroid, isIOS } from "react-device-detect";
 import copy from 'copy-to-clipboard';
+import ReactLoading from 'react-loading';
 
 //const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
 const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
@@ -22,23 +23,32 @@ function TeachableMachineTracking() {
 
     const router = useRouter();
 
-    useEffect(() => {
 
+
+    useEffect(() => {
+        if (router.isReady) {
+            console.log('ready')
+            code = router.query.code
+            _init()
+        }
+    }, [router.isReady])
+
+    useEffect(() => {
         if (isIOS && !isSafari) {
             // window.open('x-web-search://?ar', "_self");
             // window.location.href = window.location.href;
             console.log('its mus open on safari')
+            setIsLoading(false)
         } else if (isAndroid && !isChrome) {
             window.location.href = `googlechrome://navigate?url=${window.location.href}`;
         } else {
-            if (router.isReady) {
-                console.log('ready')
-                code = router.query.code
-                _init()
-            }
+            setIsLoading(false)
         }
+    })
 
-    }, [router.isReady])
+    const _getDevice = async () => {
+
+    }
 
 
     const _init = async () => {
@@ -132,39 +142,48 @@ function TeachableMachineTracking() {
                 <title>Teachable Page</title>
             </Head>
 
-            {isIOS && isSafari || isAndroid && isChrome ?
-                <main>
-                    <div className="header">
-                        <img src="/assets/image/top-banner.png" className="top-banner" />
-                    </div>
-                    <div className="video">
-                        <img src="/assets/image/camera-frame.png" className="camera-frame" />
-                        <video
-                            muted
-                            ref={videoRef}
-                            autoPlay
-                            playsInline={true}
-                            style={{ width: '100%' }}
-                            controls={false}
-                        />
-                    </div>
-                    <div className="footer">
-                        <p>將相機對準維多利亞港電視台</p>
-                        <p>Aim your camera at the Victoria Harbour TV</p>
-                    </div>
-                </main>
-                :
-                <div className="redirection" >
-                    <img className="browser-logo" src={isIOS ? '/assets/image/safari.png' : '/assets/image/chrome.png'} />
-                    <div>
-                        <p className="my-3">
-                            {isIOS ? "Open with Safari for iOS to access this content" : "Open with Chrome for Android to access this content"}
-                        </p>
-                        <p className="mb-2">Tap below to copy the address for easy pasting into {isIOS ? "Safari for iOS" : "Chrome for Android"}</p>
-                        <button className="btn" onClick={_copyLink}>Copy Page Link</button>
-                    </div>
+            {isLoading ?
+                <div className="loading-container">
+                    <ReactLoading color="#3498db" height={'20%'} width={'20%'} />
                 </div>
+                :
+                isIOS && isSafari || isAndroid && isChrome ?
+                    <main>
+                        <div className="header">
+                            <img src="/assets/image/top-banner.png" className="top-banner" />
+                        </div>
+                        <div className="video">
+                            <img src="/assets/image/camera-frame.png" className="camera-frame" />
+                            <video
+                                muted
+                                ref={videoRef}
+                                autoPlay
+                                playsInline={true}
+                                style={{ width: '100%' }}
+                                controls={false}
+                            />
+                        </div>
+                        <div className="footer">
+                            <p>將相機對準維多利亞港電視台</p>
+                            <p>Aim your camera at the Victoria Harbour TV</p>
+                        </div>
+                    </main>
+                    :
+                    <div className="redirection" >
+                        <img className="browser-logo" src={isIOS ? '/assets/image/safari.png' : '/assets/image/chrome.png'} />
+                        <div>
+                            <p className="my-3">
+                                {isIOS ? "Open with Safari for iOS to access this content" : "Open with Chrome for Android to access this content"}
+                            </p>
+                            <p className="mb-2">Tap below to copy the address for easy pasting into {isIOS ? "Safari for iOS" : "Chrome for Android"}</p>
+                            <button className="btn" onClick={_copyLink}>Copy Page Link</button>
+                        </div>
+                    </div>
             }
+
+
+
+
 
         </div>
 
