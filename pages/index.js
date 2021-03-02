@@ -28,8 +28,9 @@ function TeachableMachineTracking() {
     useEffect(() => {
 
         if (isIOS && !isSafari) {
-            window.open('x-web-search://?ar', "_self");
-            window.location.href = window.location.href;
+            // window.open('x-web-search://?ar', "_self");
+            // window.location.href = window.location.href;
+            console.log('its mus open on safari')
         } else if (isAndroid && !isChrome) {
             window.location.href = `googlechrome://navigate?url=${window.location.href}`;
         } else {
