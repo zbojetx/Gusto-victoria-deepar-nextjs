@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import * as tmImage from '@teachablemachine/image';
 import { useRouter } from 'next/router';
+import { isChrome, isSafari, isAndroid, isIOS } from "react-device-detect";
+import copy from 'copy-to-clipboard';
 
 //const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
 const URL = 'https://storage.googleapis.com/tm-model/gh4SD1u8v/';
@@ -12,7 +14,8 @@ const imageMarker = [
     "TV",
 ]
 
-
+const safariLogo = '/assets/image/safari.png';
+const chromeLogo = '/assets/image/chrome.png';
 
 function TeachableMachineTracking() {
 
@@ -23,11 +26,20 @@ function TeachableMachineTracking() {
     const router = useRouter();
 
     useEffect(() => {
-        if (router.isReady) {
-            console.log('ready')
-            code = router.query.code
-            _init()
+
+        if (isIOS && !isSafari) {
+            alert("COPY LINK BRO")
+        } else if (isAndroid && !isChrome) {
+            alert("Copy Link Bellow")
+            //window.location.href = `googlechrome://navigate?url=${window.location.href}`;
+        } else {
+            if (router.isReady) {
+                console.log('ready')
+                code = router.query.code
+                _init()
+            }
         }
+
     }, [router.isReady])
 
 
@@ -110,32 +122,52 @@ function TeachableMachineTracking() {
         window.location = `/pages/filterpage/?filtercode=${code}`
     }
 
+    const _copyLink = () => {
+        copy(window.location.href)
+        alert("Link Copied")
+    }
+
 
     return (
         <div>
             <Head>
                 <title>Teachable Page</title>
             </Head>
-            <main>
-                <div className="header">
-                <img src="/assets/image/top-banner.png" className="top-banner" />
+
+            {isIOS && isSafari || isAndroid && isChrome ?
+                <main>
+                    <div className="header">
+                        <img src="/assets/image/top-banner.png" className="top-banner" />
+                    </div>
+                    <div className="video">
+                        <img src="/assets/image/camera-frame.png" className="camera-frame" />
+                        <video
+                            muted
+                            ref={videoRef}
+                            autoPlay
+                            playsInline={true}
+                            style={{ width: '100%' }}
+                            controls={false}
+                        />
+                    </div>
+                    <div className="footer">
+                        <p>將相機對準維多利亞港電視台</p>
+                        <p>Aim your camera at the Victoria Harbour TV</p>
+                    </div>
+                </main>
+                :
+                <div className="redirection"  >
+                    <img className="browser-logo" src={isIOS ? safariLogo : chromeLogo} />
+                    <div>
+                        <p className="my-3">
+                            {isIOS ? "Open with Safari for iOS to access this content" : "Open with Chrome for Android to access this content"}
+                        </p>
+                        <p className="mb-2">Tap below to copy the address for easy pasting into {isIOS ? "Safari for iOS" : "Chrome for Android"}</p>
+                        <button className="btn" onClick={_copyLink}>Copy Page Link</button>
+                    </div>
                 </div>
-                <div className="video">
-                    <img src="/assets/image/camera-frame.png" className="camera-frame" />
-                    <video
-                        muted
-                        ref={videoRef}
-                        autoPlay
-                        playsInline={true}
-                        style={{ width:'100%'}}
-                        controls={false}
-                    />
-                </div>
-                <div className="footer">
-                    <p>將相機對準維多利亞港電視台</p>
-                    <p>Aim your camera at the Victoria Harbour TV</p>
-                </div>
-            </main>
+            }
+
         </div>
 
     )

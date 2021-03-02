@@ -2,20 +2,30 @@ import React, { useState, useEffect, useRef } from 'react'
 import Head from 'next/head';
 import styles from '../../styles/Home.module.css';
 
+const overlayImage = [
+    '/assets/image/Filter-frame/frame1.png',
+    '/assets/image/Filter-frame/frame2.png',
+    '/assets/image/Filter-frame/frame3.png',
+    '/assets/image/Filter-frame/frame4.png',
+]
+
 export default function Home() {
 
     const [isUploading, setIsUploading] = useState(false)
     const [isPreview, setIsPreview] = useState(false)
     const [imageLink, setImageLink] = useState('')
+    const [code, setCode] = useState()
 
 
     useEffect(() => {
         _isStarting()
     })
 
-    const _isStarting = () => {
+    const _isStarting = async() => {
+        const filterIndex = localStorage.getItem('filtercode')
+        setCode(filterIndex)
         window.deepAR.onVideoStarted = function () {
-            console.log("VIDEO")
+            
         };
     }
 
@@ -47,7 +57,6 @@ export default function Home() {
 
         setIsPreview(true)
         setImageLink(`https://devb-upload.s3.ap-east-1.amazonaws.com/${s3URL.filename}`)
-        console.log(`https://devb-upload.s3.ap-east-1.amazonaws.com/${s3URL.filename}`)
     }
 
     const _closePreview = () => {
@@ -64,8 +73,7 @@ export default function Home() {
             <main style={{ height: '100vh', width:'100%' }}>
                 {!isPreview ? (
                     <div style={{ display: 'flex' }}>
-                        <img id="frame-overlay" style={{ position:'absolute', width: '100%', alignSelf: 'center', justifyContent:'center'}} />
-                        {/* <img src="/assets/image/TV.png" style={{ position:'absolute', width: '100%', alignSelf: 'center', justifyContent:'center'}} /> */}
+                        <img className="frame-overlay" src={overlayImage[code]}  />
                         <canvas className="deepar" id="deepar-canvas" style={{ height: '100vh', }} onClick={_takeSceenShoot}> </canvas>
                     </div>
                 ) : (

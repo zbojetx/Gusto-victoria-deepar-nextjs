@@ -12,13 +12,6 @@ var effects = [
     '/effects/heart_glass_chef_hat',
 ];
 
-var overlayImage = [
-    '/assets/image/Filter-frame/frame1.png',
-    '/assets/image/Filter-frame/frame2.png',
-    '/assets/image/Filter-frame/frame3.png',
-    '/assets/image/Filter-frame/frame4.png',
-]
-
 // desktop, the width of the canvas is 0.66 * window height and on mobile it's fullscreen
 if (window.innerWidth > window.innerHeight) {
     canvasWidth = Math.floor(window.innerHeight * 0.66);
@@ -34,12 +27,7 @@ var deepAR = DeepAR({
     segmentationInfoZip: 'segmentation.zip',
     onInitialize: function () {
         deepAR.startVideo(true);
-        deepAR.switchEffect(0, 'slot', effects[filterIndex], function(){
-
-            var frameOverlay = document.getElementById('frame-overlay')
-            frameOverlay.setAttribute('src', overlayImage[filterIndex])
-
-        });
+        deepAR.switchEffect(0, 'slot', effects[filterIndex]);
     }
 });
 
